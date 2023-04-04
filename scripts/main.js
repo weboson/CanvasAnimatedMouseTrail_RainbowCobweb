@@ -15,7 +15,7 @@ canvas.addEventListener('mousemove', function(event) {
   mouse.x = event.x;
   mouse.y = event.y;
 
-  for(let i = 0; i < 3; i++) {
+  for(let i = 0; i < 3; i++) { // < 3 - количество узлов в сетке
     spots.push(new Particle());
   }
 });
@@ -23,9 +23,10 @@ canvas.addEventListener('mousemove', function(event) {
 // Частица
 class Particle {
   constructor() {
+    // данные частиц
     this.x = mouse.x;
     this.y = mouse.y;
-    this.size = Math.random() * 2 + 0.1;
+    this.size = Math.random() * 6 + 0.1; // размеры (масштаб событий)
     this.speedX = Math.random() * 2 - 1; 
     this.speedY = Math.random() * 2 - 1;
     this.color = `hsl(${hue}, 100%, 50%)`;
@@ -34,13 +35,15 @@ class Particle {
   update() {
     this.x += this.speedX;                  
     this.y += this.speedY;
-    if (this.size > 0.1) this.size -= 0.03; // size если больше 0.1, то убавить 0.03
+    if (this.size > 0.1) this.size -= 0.03; // условие: если size больше 0.1, то убавить 0.03
   }
 
   draw() { // рисовать
     ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); // кружки в рандомных позициях и размере
+    //     (positions x/y, size = radius, full full circle)
+    // used sitting: this.size => 2
+    ctx.arc(this.x, this.y, 1, 0, Math.PI * 2); // кружки в рандомных позициях и размере
     ctx.fill(); // залить текущим цветом
   }
 };
@@ -57,6 +60,7 @@ function handleParticle () { // handle - рука
       const distance = Math.sqrt(dx * dx + dy * dy); // пример: Math.sqrt(9); // 3
 
       if (distance < 100) {
+        // линии 
         ctx.beginPath();
         ctx.strokeStyle = spots[i].color;
         ctx.lineWidth = spots[i].size / 10;
